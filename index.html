@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Döviz Çevirici</title>
+
+<style>
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  padding:40px;
+}
+.box{
+  background:#1e293b;
+  padding:20px;
+  width:340px;
+  margin:15px auto;
+  border-radius:12px;
+}
+input, select, button{
+  padding:10px;
+  margin:8px;
+  font-size:16px;
+  border-radius:8px;
+  border:none;
+}
+button{
+  background:gold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💱 Canlı Döviz Çevirici</h1>
+
+<div class="box">
+
+<input type="number" id="amount" placeholder="Miktar">
+
+<br>
+
+<select id="from">
+  <option value="TRY">TRY</option>
+  <option value="USD">USD</option>
+  <option value="EUR">EUR</option>
+  <option value="GBP">GBP</option>
+</select>
+
+➡️
+
+<select id="to">
+  <option value="USD">USD</option>
+  <option value="TRY">TRY</option>
+  <option value="EUR">EUR</option>
+  <option value="GBP">GBP</option>
+</select>
+
+<br>
+
+<button onclick="convert()">Çevir</button>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+async function convert(){
+  const amount = document.getElementById("amount").value;
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
+  if(!amount) return;
+
+  const res = await fetch("https://open.er-api.com/v6/latest/" + from);
+  const data = await res.json();
+
+  const rate = data.rates[to];
+  const result = amount * rate;
+
+  document.getElementById("result").innerHTML =
+    `${amount} ${from} = <b>${result.toFixed(2)} ${to}</b>`;
+}
+
+</script>
+
+</body>
+</html>
